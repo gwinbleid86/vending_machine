@@ -93,6 +93,34 @@ public class AppRunner {
         }
     }
 
+    private void choosePaymentMethod(){
+        choosePaymentMethodAction();
+        String method = fromConsole().trim();
+
+//        int amount = Integer.parseInt(fromConsole().trim());
+
+        try {
+            if(method.equals("k")){
+                print("Введите номер карты:");
+                String cardNumber = fromConsole().trim();
+                print("Введите пароль:");
+                String password = fromConsole().trim();
+                PaymentByCard paymentByCard = new PaymentByCard(cardNumber, password);
+
+            }else if(method.matches("m")){
+                print("Закиньте монетки: ");
+            }
+
+        }catch(IllegalArgumentException e){
+            print("Недопустимая буква. Попрбуйте еще раз.");
+            choosePaymentMethod();
+        }
+    }
+    private void choosePaymentMethodAction(){
+        print("Выберите метнод оплаты: ");
+        print("k - карта | m - монетки");
+    }
+
     private void print(String msg) {
         System.out.println(msg);
     }
