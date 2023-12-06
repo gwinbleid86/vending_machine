@@ -5,10 +5,10 @@ public class PaymentByCard {
     String password;
     int amount;
 
-    public PaymentByCard(String cardNumber, String password, int amount){
+    public PaymentByCard(String cardNumber, String password){
         this.cardNumber = cardNumber;
         this.password = password;
-        this.amount = amount;
+        this.amount = 0;
     }
 
     public int getAmount(){
