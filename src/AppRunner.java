@@ -22,7 +22,8 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        coinAcceptor = new CoinAcceptor(100);
+        int amount = choosePaymentMethod();
+        coinAcceptor = new CoinAcceptor(amount);
     }
 
     public static void run() {
@@ -93,11 +94,9 @@ public class AppRunner {
         }
     }
 
-    private void choosePaymentMethod(){
+    private int choosePaymentMethod(){
         choosePaymentMethodAction();
         String method = fromConsole().trim();
-
-//        int amount = Integer.parseInt(fromConsole().trim());
 
         try {
             if(method.equals("k")){
@@ -106,15 +105,23 @@ public class AppRunner {
                 print("Введите пароль:");
                 String password = fromConsole().trim();
                 PaymentByCard paymentByCard = new PaymentByCard(cardNumber, password);
+                print("Выберите нужную сумму для пополнения :");
+                String input = fromConsole().trim();
+                int amount = Integer.parseInt(input);
 
+                return amount;
             }else if(method.matches("m")){
                 print("Закиньте монетки: ");
+                String input = fromConsole().trim();
+                int amount = Integer.parseInt(input);
+                return amount;
             }
 
         }catch(IllegalArgumentException e){
             print("Недопустимая буква. Попрбуйте еще раз.");
             choosePaymentMethod();
         }
+        return 0;
     }
     private void choosePaymentMethodAction(){
         print("Выберите метнод оплаты: ");
