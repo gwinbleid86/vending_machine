@@ -1,14 +1,11 @@
 package model;
 
-public class PaymentByCard {
+public class Payment {
     String cardNumber;
     String password;
-    int amount;
+    int amount = 0;
 
-    public PaymentByCard(String cardNumber, String password){
-        this.cardNumber = cardNumber;
-        this.password = password;
-        this.amount = 0;
+    public Payment(){
     }
 
     public int getAmount(){
