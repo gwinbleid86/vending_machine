@@ -1,0 +1,10 @@
+git checkout home_work_25 - переход на ветку home_work_25
+git status - проверка ветки, есть ли изменения в файлах
+git add . - добавит файл для коммита
+git commit -m "adds class PaymentByCard"  - зафиксировать изменения 
+git push - загрузить файлы на удаленный репо,
+....
+git checkout master - переход на ветку master
+git merge home_work_25 - объединениям ветки
+
+
