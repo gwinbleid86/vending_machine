@@ -10,6 +10,7 @@ public class AppRunner {
     private final UniversalArray<Product> products = new UniversalArrayImpl<>();
 
     private final CoinAcceptor coinAcceptor;
+    private final Payment payment;
 
     private static boolean isExit = false;
 
@@ -22,7 +23,9 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        coinAcceptor = new CoinAcceptor(100);
+        payment = new Payment();
+        choosePaymentMethod();
+        coinAcceptor = new CoinAcceptor(payment.getAmount());
     }
 
     public static void run() {
@@ -42,6 +45,20 @@ public class AppRunner {
         allowProducts.addAll(getAllowedProducts().toArray());
         chooseAction(allowProducts);
 
+        if (coinAcceptor.getAmount() > 0) {
+            print("Монет на сумму: " + coinAcceptor.getAmount());
+            print("Желаете добавить еще деньги? (y/n)");
+            String input = fromConsole().trim().toLowerCase();
+            if (input.equals("y")) {
+                choosePaymentMethod();
+                coinAcceptor.setAmount(coinAcceptor.getAmount() + payment.getAmount());
+            } else if (input.equals("n")) {
+                isExit = true;
+            } else {
+                print("Недопустимая буква. Попрбуйте еще раз.");
+                startSimulation();
+            }
+        }
     }
 
     private UniversalArray<Product> getAllowedProducts() {
@@ -90,6 +107,58 @@ public class AppRunner {
     private void showProducts(UniversalArray<Product> products) {
         for (int i = 0; i < products.size(); i++) {
             print(products.get(i).toString());
+        }
+    }
+
+    private void choosePaymentMethod() {
+        choosePaymentMethodAction();
+        String method = fromConsole().trim();
+
+        try {
+            if (method.equals("k")) {
+                payByCard();
+            } else if (method.equals("m")) {
+                payByCash();
+            } else {
+                print("Недопустимая буква. Попробуйте еще раз.");
+                choosePaymentMethod();
+            }
+        } catch (NumberFormatException e) {
+            print("Недопустимая сумма. Попробуйте еще раз.");
+            choosePaymentMethod();
+        }
+    }
+    private void choosePaymentMethodAction(){
+        print("Выберите метнод оплаты: ");
+        print("k - карта | m - монетки");
+    }
+
+    private void payByCash(){
+        try {
+            print("Закиньте монетки: ");
+            int amount = Integer.parseInt(fromConsole().trim());
+            payment.setAmount(payment.getAmount() + amount);
+        } catch (NumberFormatException e) {
+            print("Недопустимая сумма. Попробуйте еще раз.");
+            payByCash();
+        }
+    }
+
+    private void payByCard(){
+        try {
+            print("Введите номер карты:");
+            String cardNumber = fromConsole().trim();
+            payment.setCardNumber(cardNumber);
+            print("Введите пароль:");
+            String password = fromConsole().trim();
+            payment.setPassword(password);
+            print("Выберите нужную сумму для пополнения :");
+            String input = fromConsole().trim();
+            int amount = Integer.parseInt(input);
+            payment.setAmount(payment.getAmount() + amount);
+        }catch (NumberFormatException e) {
+            print("Недопустимая сумма. Попробуйте еще раз.");
+            payByCard();
         }
     }
 
